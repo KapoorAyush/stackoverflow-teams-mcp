@@ -466,6 +466,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "fastmcp" },
     { name = "httpx" },
+    { name = "pydantic" },
     { name = "pydantic-settings" },
 ]
 
@@ -480,6 +481,7 @@ dev = [
 requires-dist = [
     { name = "fastmcp", specifier = ">=2.1.0" },
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "pydantic", specifier = ">=2.11.3" },
     { name = "pydantic-settings", specifier = ">=2.8.1" },
 ]
 
