@@ -40,7 +40,7 @@ async def make_so_request(url: str) -> dict[str, Any] | None:
 @mcp.tool()
 async def search_stackoverflow(query: str, ctx: Context) -> utils.SearchExcerpts | str:
     """
-    Search stackoverflow for code samples, snippets answers and articles
+    search the stackoverflow api for code snippets, questions, answers and articles on programming topics.
     :param query: the search query
     :return: A list of search results if successful, otherwise an error message.
     """
