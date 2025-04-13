@@ -1,0 +1,31 @@
+{
+    "inputs": {
+        "teamsoverflow-base-url": {
+            "type": "promptString",
+            "description": "Enter the base URL for the StackOverflow Teams API",
+            "default": "https://api.example.com"
+        },
+        "teamsoverflow-api-key": {
+            "type": "promptString",
+            "description": "Enter the API key",
+            "default": "",
+            "password": true
+        }
+    },
+    "servers": {
+        "teamsoverflow": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "--directory",
+                "${workspaceFolder}",
+                "run",
+                "main.py"
+            ],
+            "env": {
+                "BASE_URL": "${input:teamsoverflow-base-url}",
+                "API_KEY": "${input:teamsoverflow-api-key}"
+            }
+        }
+    }
+}
