@@ -1,55 +1,32 @@
 from pydantic import BaseModel
-from typing import List, Optional, Union
+from typing import List, Optional, Literal
+from datetime import datetime
 
 
-class SearchResultBase(BaseModel):
-    """Base class for all search result models."""
-
-    title: str
-    snippet: str
-    tags: List[str]
-    owner: dict  # Using dict instead of UserSummaryResponseModel for simplicity
-    creationDate: str
+# https://api.stackexchange.com/docs/types/search-excerpt
+class SearchExcerpt(BaseModel):
+    body: str
+    creation_date: datetime
+    excerpt: str
+    item_type: Literal["question", "answer"]
+    last_activity_date: datetime
     score: int
-    webUrl: str
+    title: str
+
+    # Optional fields
+    answer_count: Optional[int] = None
+    answer_id: Optional[int] = None
+    closed_date: Optional[datetime] = None
+    community_owned_date: Optional[datetime] = None
+    equivalent_tag_search: Optional[List[str]] = None
+    has_accepted_answer: Optional[bool] = None
+    is_accepted: Optional[bool] = None
+    is_answered: Optional[bool] = None
+    locked_date: Optional[datetime] = None
+    question_id: Optional[int] = None
+    question_score: Optional[int] = None
+    tags: Optional[List[str]] = None
 
 
-class QuestionSearchResult(SearchResultBase):
-    """Question search result model."""
-
-    type: str = "question"
-    questionId: int
-    answerCount: int
-    hasAcceptedAnswer: bool
-    viewCount: int
-
-
-class AnswerSearchResult(SearchResultBase):
-    """Answer search result model."""
-
-    type: str = "answer"
-    answerId: int
-    parentQuestionId: int
-    isAccepted: bool
-
-
-class ArticleSearchResult(SearchResultBase):
-    """Article search result model."""
-
-    type: str = "article"
-    articleId: int
-    viewCount: int
-    articleType: str
-    readTimeInMinutes: Optional[int] = None
-
-
-class PaginatedSearchResults(BaseModel):
-    """Paginated search results container."""
-
-    totalCount: int
-    pageSize: int
-    page: int
-    totalPages: int
-    sort: Optional[str]  # Referencing SearchSortParameter
-    items: List[Union[QuestionSearchResult, AnswerSearchResult, ArticleSearchResult]]
-    type: str
+class SearchExcerpts(BaseModel):
+    each_item: List[SearchExcerpt]
