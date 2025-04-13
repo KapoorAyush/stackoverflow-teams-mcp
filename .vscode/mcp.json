@@ -1,17 +1,19 @@
 {
-    "inputs": {
-        "teamsoverflow-base-url": {
+    "inputs": [
+        {
+            "id": "teamsoverflow-base-url",
             "type": "promptString",
             "description": "Enter the base URL for the StackOverflow Teams API",
-            "default": "https://api.example.com"
+            "default": "https://api.stackexchange.com/v3"
         },
-        "teamsoverflow-api-key": {
+        {
+            "id": "teamsoverflow-api-key",
             "type": "promptString",
             "description": "Enter the API key",
             "default": "",
             "password": true
         }
-    },
+    ],
     "servers": {
         "teamsoverflow": {
             "type": "stdio",
