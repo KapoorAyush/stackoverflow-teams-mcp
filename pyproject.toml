@@ -12,7 +12,10 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pre-commit>=4.2.0",
-    "pyright>=1.1.398",
+    "pyright>=1.1.399",
     "ruff>=0.11.4",
 ]
 
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
