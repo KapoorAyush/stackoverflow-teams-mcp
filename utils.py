@@ -29,4 +29,4 @@ class SearchExcerpt(BaseModel):
 
 
 class SearchExcerpts(BaseModel):
-    each_item: List[SearchExcerpt]
+    items: List[SearchExcerpt]

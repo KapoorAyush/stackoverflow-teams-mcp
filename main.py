@@ -1,17 +1,14 @@
+import os
 from contextlib import asynccontextmanager
 import httpx
 from typing import Any
 from fastmcp import FastMCP, Context
-from pydantic_settings import BaseSettings
-from pydantic import Field
 from urllib.parse import quote
 
 import utils
 
-
-class Settings(BaseSettings):
-    base_url: str = Field(default=...)
-    api_key: str = Field(default=...)
+BASE_URL = os.environ.get("BASE_URL", "https://api.stackexchange.com/2.3")
+API_KEY = os.environ.get("API_KEY")
 
 
 @asynccontextmanager
@@ -21,8 +18,6 @@ async def lifespan(app: FastMCP):
     await httpClient.aclose()
 
 
-settings = Settings()
-
 mcp = FastMCP(name="teamsoverflow", lifespan=lifespan)
 httpClient = httpx.AsyncClient()
 
@@ -31,7 +26,7 @@ async def make_so_request(url: str) -> dict[str, Any] | None:
     """Make a request to the StackOverflow API with proper error handling."""
     headers = {
         "accept": "application/json",
-        "Authorization": f"Bearer {settings.api_key}",
+        "Authorization": f"Bearer {API_KEY}",
     }
     try:
         response = await httpClient.get(url, headers=headers, timeout=10.0)
@@ -45,15 +40,13 @@ async def make_so_request(url: str) -> dict[str, Any] | None:
 @mcp.tool()
 async def search_stackoverflow(query: str, ctx: Context) -> utils.SearchExcerpts | str:
     """
-    Search StackOverflow for a given query.
+    Search stackoverflow for code samples, snippets answers and articles
     :param query: the search query
     :return: A list of search results if successful, otherwise an error message.
     """
     # URL encode the query for safety
-    await ctx.info(f"{settings.model_dump()}")
-
     encoded_query = quote(query)
-    url = f"{settings.base_url}/search/excerpt?q={encoded_query}&page=1&pagesize=5&sort=relevance&answers=1"
+    url = f"{BASE_URL}/search/excerpts?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=5&sort=relevance&answers=1&filter=default"
 
     await ctx.info(f"Searching StackOverflow for: {query}")
     await ctx.info(f"Making request to {url}")
