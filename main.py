@@ -37,7 +37,7 @@ async def make_so_request(url: str) -> dict[str, Any] | None:
         return None
 
 @mcp.tool()
-async def stackoverflow_questions(query: str, ctx: Context) -> utils.SearchQnA | str:
+async def stackoverflow_questions(query: str, ctx: Context) -> str:
     """
     search stackoverflow for questions and answers matching the query
     :param query: the search query
@@ -64,7 +64,7 @@ async def stackoverflow_questions(query: str, ctx: Context) -> utils.SearchQnA |
         return f"Error parsing search results: {e}"
 
 @mcp.tool()
-async def stackoverflow_excerpts(query: str, ctx: Context) -> utils.SearchExcerpts | str:
+async def stackoverflow_excerpts(query: str, ctx: Context) -> str:
     """
     search stackoverflow for excerpts matching the query
     :param query: the search query
@@ -72,7 +72,7 @@ async def stackoverflow_excerpts(query: str, ctx: Context) -> utils.SearchExcerp
     """
     # URL encode the query for safety
     encoded_query = quote(query)
-    url = f"{BASE_URL}/search/excerpts?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=5&sort=relevance&answers=1&filter=withbody"
+    url = f"{BASE_URL}/search/excerpts?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=10&sort=relevance&answers=1&filter=withbody"
 
     await ctx.info(f"Searching StackOverflow for: {query}")
     await ctx.info(f"Making request to {url}")
