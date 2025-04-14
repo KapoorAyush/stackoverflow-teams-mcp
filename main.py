@@ -36,17 +36,42 @@ async def make_so_request(url: str) -> dict[str, Any] | None:
         print(f"Error making request: {e}")
         return None
 
-
 @mcp.tool()
-async def search_stackoverflow(query: str, ctx: Context) -> utils.SearchExcerpts | str:
+async def stackoverflow_questions(query: str, ctx: Context) -> utils.SearchQnA | str:
     """
-    search the stackoverflow api for code snippets, questions, answers and articles on programming topics.
+    search stackoverflow for questions and answers matching the query
     :param query: the search query
     :return: A list of search results if successful, otherwise an error message.
     """
     # URL encode the query for safety
     encoded_query = quote(query)
-    url = f"{BASE_URL}/search/excerpts?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=5&sort=relevance&answers=1&filter=default"
+    url = f"{BASE_URL}/search/advanced?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=3&sort=relevance&answers=1&filter=withbody"
+
+    await ctx.info(f"Searching StackOverflow for: {query}")
+    await ctx.info(f"Making request to {url}")
+
+    data = await make_so_request(url)
+
+    if not data:
+        return "Unable to fetch results or no results found."
+
+    try:
+        results = utils.SearchQnA.model_validate(data)
+        return results
+    except Exception as e:
+        await ctx.warning(f"Error parsing response: {e}")
+        return f"Error parsing search results: {e}"
+
+@mcp.tool()
+async def stackoverflow_excerpts(query: str, ctx: Context) -> utils.SearchExcerpts | str:
+    """
+    search stackoverflow for excerpts matching the query
+    :param query: the search query
+    :return: A list of search results if successful, otherwise an error message.
+    """
+    # URL encode the query for safety
+    encoded_query = quote(query)
+    url = f"{BASE_URL}/search/excerpts?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=5&sort=relevance&answers=1&filter=withbody"
 
     await ctx.info(f"Searching StackOverflow for: {query}")
     await ctx.info(f"Making request to {url}")

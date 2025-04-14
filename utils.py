@@ -30,3 +30,35 @@ class SearchExcerpt(BaseModel):
 
 class SearchExcerpts(BaseModel):
     items: List[SearchExcerpt]
+
+class Question(BaseModel):
+    accepted_answer_id: Optional[int] = None
+    answer_count: int
+    answers: Optional[List[dict]] = None
+    body: str
+    bounty_amount: Optional[int] = None
+    bounty_closes_date: Optional[datetime] = None
+    closed_date: Optional[datetime] = None
+    closed_reason: Optional[str] = None
+    collectives: Optional[List[dict]] = None
+    community_owned_date: Optional[datetime] = None
+    content_license: Optional[str] = None
+    creation_date: datetime
+    is_answered: bool
+    last_activity_date: datetime
+    last_edit_date: Optional[datetime] = None
+    link: str
+    locked_date: Optional[datetime] = None
+    migrated_from: Optional[dict] = None
+    migrated_to: Optional[dict] = None
+    owner: Optional[dict] = None
+    posted_by_collectives: Optional[List[dict]] = None
+    protected_date: Optional[datetime] = None
+    question_id: int
+    score: int
+    tags: List[str]
+    title: str
+    view_count: int
+
+class SearchQnA(BaseModel):
+    items: List[Question]
