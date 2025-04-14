@@ -57,7 +57,8 @@ async def stackoverflow_questions(query: str, ctx: Context) -> utils.SearchQnA |
 
     try:
         results = utils.SearchQnA.model_validate(data)
-        return results
+        formatted = [ f"Title: {i.title}\n Body: {i.body} \n Link: {i.link}" for i in results.items]
+        return "\n\n".join(formatted)
     except Exception as e:
         await ctx.warning(f"Error parsing response: {e}")
         return f"Error parsing search results: {e}"
@@ -81,9 +82,17 @@ async def stackoverflow_excerpts(query: str, ctx: Context) -> utils.SearchExcerp
     if not data:
         return "Unable to fetch results or no results found."
 
+    def get_link(item: utils.SearchExcerpt) -> str:
+        if item.item_type == "question":
+            return f"https://stackoverflow.com/questions/{item.question_id}"
+        else:
+            return f"https://stackoverflow.com/a/{item.answer_id}"
+
     try:
         results = utils.SearchExcerpts.model_validate(data)
-        return results
+        formatted = [ f"Title: {i.title}\n Body: {i.body}\n Type: {i.item_type}\n Link: {get_link(i)}" 
+                     for i in results.items]
+        return "\n\n".join(formatted)
     except Exception as e:
         await ctx.warning(f"Error parsing response: {e}")
         return f"Error parsing search results: {e}"
