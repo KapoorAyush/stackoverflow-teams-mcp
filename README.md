@@ -14,7 +14,7 @@ The server uses the Stack Exchange API to fetch data and formats the results in 
 ## Project Structure
 
 ```
-teamsoverflow-mcp/
+stackoverflow-teams-mcp/
 ├── .vscode/mcp.json # Dogfooding - Using this server with VSCode Copilot in this project
 ├── main.py          # MCP server logic
 └── utils.py         # data models
@@ -33,7 +33,7 @@ This project uses `uv` for Python package management. Follow these steps to set 
 1. Clone the repository:
    ```bash
    git clone [your-repository-url]
-   cd teamsoverflow-mcp
+   cd stackoverflow-teams-mcp
    ```
 
 2. Create a virtual environment and install dependencies using uv:
