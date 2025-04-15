@@ -1,4 +1,4 @@
-# TeamsOverflow MCP
+# Stackoverflow Teams MCP
 
 A Model Context Protocol (MCP) server that provides access to the Stack Exchange API for Teams, allowing AI assistants to search and retrieve information from Stack Overflow.
 
