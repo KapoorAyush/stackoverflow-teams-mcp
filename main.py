@@ -41,7 +41,11 @@ async def stackoverflow_questions(query: str, ctx: Context) -> str:
     """
     # URL encode the query for safety
     encoded_query = quote(query)
-    url = f"{BASE_URL}/search/advanced?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=3&sort=relevance&answers=1&filter=withbody"
+    url = (
+        f"{BASE_URL}/search/advanced?key={API_KEY}"
+        f"&q={encoded_query}&order=desc&page=1&pagesize=3"
+        f"&sort=relevance&answers=1&filter=withbody&site=stackoverflow"
+    )
 
     await ctx.info(f"Searching StackOverflow for: {query}")
     await ctx.info(f"Making request to {url}")
@@ -68,8 +72,13 @@ async def stackoverflow_excerpts(query: str, ctx: Context) -> str:
     """
     # URL encode the query for safety
     encoded_query = quote(query)
-    url = f"{BASE_URL}/search/excerpts?key={API_KEY}&q={encoded_query}&order=desc&page=1&pagesize=10&sort=relevance&answers=1&filter=withbody"
-
+    
+    url = (
+        f"{BASE_URL}/search/excerpts?key={API_KEY}"
+        f"&q={encoded_query}&order=desc&page=1&pagesize=10"
+        f"&sort=relevance&answers=1&filter=withbody&site=stackoverflow"
+    )
+    
     await ctx.info(f"Searching StackOverflow for: {query}")
     await ctx.info(f"Making request to {url}")
 
